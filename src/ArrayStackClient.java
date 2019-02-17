@@ -4,7 +4,7 @@ import java.io.IOException;
 class ArrayStackClient{
 	public static void main(String []args){		
 		//Create an object of ArrayStackInteger
-		ArrayStackGeneric<Integer> scores = new ArrayStackGeneric<>();
+		Stack<Integer> scores = new Stack<>();
 		//Read the scores from a text file and add it to the stack
 		File myFile;
 		Scanner scan;

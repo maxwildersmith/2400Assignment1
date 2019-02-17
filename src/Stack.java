@@ -1,10 +1,10 @@
-public class ArrayStackGeneric<T> {
+public class Stack<T> {
 
         private int top, size;
         private final int DEFAULT_SIZE=10;
         private T[] data;
 
-        public ArrayStackGeneric(){
+        public Stack(){
             data = (T[]) new Object[0];
         }
 

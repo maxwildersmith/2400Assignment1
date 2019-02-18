@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-public class Bag<T> {
+public class Bag<T>{
     private int currentSize;
     private T[] data;
 

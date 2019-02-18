@@ -21,13 +21,7 @@ public class Tester extends JFrame {
      * MaximumWilder-Smith_project1.zip
      */
     public static void main(String[] args) {
-        LinkedBag<String> test = new LinkedBag<>();
-        test.add("one");
-        test.add("two");
-        test.add("three");
-        test.remove();
-        test.remove("two");
-        test.isEmpty();
+
     }
 
     /**
@@ -36,6 +30,7 @@ public class Tester extends JFrame {
     public Tester(){
         setTitle("Assignment 1");
         setSize(400,200);
+        setLocationRelativeTo(null);
         getContentPane().setLayout(new BoxLayout(getContentPane(),BoxLayout.PAGE_AXIS));
 
         JButton resizeBag = new JButton("Task 1 - Step 1");

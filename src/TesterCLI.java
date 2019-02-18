@@ -2,7 +2,8 @@ import java.util.Scanner;
 
 public class TesterCLI {
     public static void main(String[] args) {
-        //Task1();
+        task1();
+        task2();
 
     }
 
@@ -11,14 +12,16 @@ public class TesterCLI {
         Scanner in = new Scanner(System.in);
         boolean running = true;
         while(running){
-            System.out.println("Enter infix expression: ");
+            System.out.println("Enter infix expression or type 'q' to exit: ");
             String exp = in.nextLine();
-            if(!checkBalance(exp)) {
+            if(exp.toLowerCase().trim().charAt(0)=='q')
+                running=false;
+            else if(!checkBalance(exp))
                 System.out.println("Expression is not balanced!");
-                continue;
+            else {
+                System.out.println("Prefix: " + prefix(exp));
+                System.out.println("Postfix: " + postfix(exp));
             }
-            System.out.println("Prefix: "+prefix(exp));
-            System.out.println("Postfix: "+postfix(exp));
         }
     }
 
@@ -27,7 +30,7 @@ public class TesterCLI {
         return exp;
     }
 
-    public static String prefix(String exp){
+    private static String prefix(String exp){
 
         return exp;
     }
@@ -37,7 +40,7 @@ public class TesterCLI {
      * @param exp The expression as a String.
      * @return True if the expression is valid.
      */
-    public static boolean checkBalance(String exp){
+    private static boolean checkBalance(String exp){
         boolean isBalanced = true;
         char[] chars = exp.toCharArray();
         int index=0;
@@ -77,7 +80,10 @@ public class TesterCLI {
         return isBalanced;
     }
 
-    public static void Task1(){
+    /**
+     * Method to create rosters and test Task #1 of the assignment while querying the user for input
+     */
+    private static void task1(){
         System.out.println("Beginning Task 1 part 1....");
         Bag<Student> roster = new Bag<>();
         boolean running = true;

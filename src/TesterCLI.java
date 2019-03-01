@@ -62,18 +62,20 @@ public class TesterCLI {
                 case '-':
                 case '/':
                 case '*':
+                    while(!ops.isEmpty()&&(priorityOfOp(c)<=priorityOfOp(ops.peek())))
+                            out+=ops.pop();
+                    ops.push(c);
+                    break;
                 case '(':
                 case '{':
                 case '[':
-                    if(!ops.isEmpty()&&(priorityOfOp(c)<=priorityOfOp(ops.peek())))
-                        out+=ops.pop();
                     ops.push(c);
-                    break;
                 case ')':
                 case '}':
                 case ']':
                     while(!ops.isEmpty()&&priorityOfOp(ops.peek())!=4)
                         out+=ops.pop();
+                    break;
                 default:
                     out+=c;
             }
@@ -129,7 +131,6 @@ public class TesterCLI {
                         isBalanced=sym.pop().equals('[');
                     break;
             }
-            printStack(chars[index],sym);
             index++;
         }
         return isBalanced;

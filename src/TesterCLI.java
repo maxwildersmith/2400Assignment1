@@ -62,6 +62,9 @@ public class TesterCLI {
                 case '-':
                 case '/':
                 case '*':
+                case '(':
+                case '{':
+                case '[':
                     if(!ops.isEmpty()&&(priorityOfOp(c)<=priorityOfOp(ops.peek())))
                         out+=ops.pop();
                     ops.push(c);
@@ -69,7 +72,7 @@ public class TesterCLI {
                 case ')':
                 case '}':
                 case ']':
-                    while(priorityOfOp(ops.peek())!=4)
+                    while(!ops.isEmpty()&&priorityOfOp(ops.peek())!=4)
                         out+=ops.pop();
                 default:
                     out+=c;
@@ -91,6 +94,7 @@ public class TesterCLI {
      * @return True if the expression is valid.
      */
     private static boolean checkBalance(String exp){
+        exp=exp.replaceAll(" ","");
         boolean isBalanced = true;
         char[] chars = exp.toCharArray();
         int index=0;
@@ -125,9 +129,14 @@ public class TesterCLI {
                         isBalanced=sym.pop().equals('[');
                     break;
             }
+            printStack(chars[index],sym);
             index++;
         }
         return isBalanced;
+    }
+
+    public static void printStack(char c, Stack stack){
+        System.out.printf("''"+c+"'\t"+stack.toString()+"\n");
     }
 
     /**

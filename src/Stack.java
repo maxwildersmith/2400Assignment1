@@ -41,5 +41,11 @@ public class Stack<T> {
             return data[top];
 
         }
+        public String toString(){
+            String out = "[";
+            for(int i=0;i<data.length;i++)
+                out+="'"+data[i]+"', ";
+            return out.trim().substring(0,out.length()<=1?out.length():out.lastIndexOf(','))+"]";
+        }
 
 }

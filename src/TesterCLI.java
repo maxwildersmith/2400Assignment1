@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class TesterCLI {
     public static void main(String[] args) {
-        task1();
+//        task1();
         task2();
 
     }
@@ -25,9 +25,59 @@ public class TesterCLI {
         }
     }
 
-    private static String postfix(String exp) {
+    public static int priorityOfOp(char op){
+        int priority=0;
+        switch (op){
+            case '{':
+            case '}':
+            case '[':
+            case ']':
+            case '(':
+            case ')':
+                priority=4;
+                break;
+            case '^':
+                priority=3;
+                break;
+            case '*':
+            case '/':
+                priority=2;
+                break;
+            case '+':
+            case '-':
+                priority=1;
+                break;
+        }
+        return priority;
+    }
 
-        return exp;
+    //highest priority - parentheses, exponent, */, +-   a-b+c=ab-c+     a^b^c=abc^^
+    private static String postfix(String exp) {
+        String out="";
+        Stack<Character> ops = new Stack<>();
+        char[] chars = exp.toCharArray();
+        for(char c: chars){
+            switch (c){
+                case '+':
+                case '-':
+                case '/':
+                case '*':
+                    if(!ops.isEmpty()&&(priorityOfOp(c)<=priorityOfOp(ops.peek())))
+                        out+=ops.pop();
+                    ops.push(c);
+                    break;
+                case ')':
+                case '}':
+                case ']':
+                    while(priorityOfOp(ops.peek())!=4)
+                        out+=ops.pop();
+                default:
+                    out+=c;
+            }
+        }
+        while(!ops.isEmpty())
+            out+=ops.pop();
+        return out;
     }
 
     private static String prefix(String exp){

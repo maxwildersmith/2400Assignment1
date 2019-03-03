@@ -1,9 +1,12 @@
-public class LinkedStack<T> {
+package Project;
+
+@SuppressWarnings({"unchecked","unused"})
+public class LinkedStack<T> implements StackInterface<T>{
 
     private int size;
     private Node first;
 
-    public LinkedStack(){
+    LinkedStack(){
         size=0;
     }
 
@@ -15,9 +18,12 @@ public class LinkedStack<T> {
         return size==0;
     }
 
+    public void clear() {
+        first=null;
+    }
+
     public void push(T i){
-        Node<T> temp = new Node<>(i,first);
-        first=temp;
+        first= (Node<T>) new Node(i,first);
         size++;
     }
     public T pop(){

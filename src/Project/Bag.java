@@ -1,6 +1,9 @@
+package Project;
+
 import java.util.Arrays;
 
-public class Bag<T>{
+@SuppressWarnings({"WeakerAccess", "FieldCanBeLocal", "unchecked"})
+public class Bag<T> implements BagInterface<T>{
     private int currentSize;
     private T[] data;
 
@@ -8,34 +11,27 @@ public class Bag<T>{
     private static final int DEFAULT_SIZE = 10, MAX_CAPACITY = 10000;
 
     /**
-     * Default Bag constructor with default size (10).
+     * Default Project.Bag constructor with default size (10).
      */
     public Bag() {
         this(DEFAULT_SIZE);
     }
 
     /**
-     * Bag constructor with a specified size.
+     * Project.Bag constructor with a specified size.
      * @param startSize The starting size of the bag.
      */
-    @SuppressWarnings({"unchecked", "WeakerAccess"})
     public Bag(int startSize) {
         checkCapacity(startSize);
         currentSize = 0;
         data = (T[]) new Object[startSize];
     }
 
-    /**
-     * Adds a new entry to the Bag and doubles the size of the data array if need be.
-     * @param newEntry The entry to add to the bag.
-     * @return True if the adding operation was performed successfully, false if the entry is already present.
-     */
     public boolean add(T newEntry) {
         checkIntegrity();
         if(contains(newEntry)!=null)
             return false;
         if (isFull()) {
-            T[] temp = data;
             checkCapacity(data.length*2);
             data = Arrays.copyOf(data,data.length*2);
         }
@@ -55,11 +51,6 @@ public class Bag<T>{
             throw new IllegalStateException("Trying to make a bag with negative size");
     }
 
-    /**
-     * Finds the amount of times an entry is present in the Bag.
-     * @param entry Entry to search for.
-     * @return Amount of times the specified entry appears.
-     */
     public int getFrequencyOf(T entry) {
         checkIntegrity();
 
@@ -71,8 +62,8 @@ public class Bag<T>{
     }
 
     /**
-     * Special frequency method for the Student class to get the frequency of the class of the student provided.
-     * @param entry A Student with the academic level to find the frequency of.
+     * Special frequency method for the Project.Student class to get the frequency of the class of the student provided.
+     * @param entry A Project.Student with the academic level to find the frequency of.
      * @return Number of Students with the specified class level.
      */
     public int getClassFrequencyOf(Student entry) {
@@ -87,11 +78,7 @@ public class Bag<T>{
         return count;
     }
 
-    /**
-     * Removes a specified entry from the bag and returns true if the entry was present.
-     * @param entry The entry to remove.
-     * @return Returns true if the entry was present and removed, false if otherwise.
-     */
+
     public boolean remove(T entry){
         checkIntegrity();
         for(int i=0;i<getCurrentSize();i++)
@@ -103,41 +90,45 @@ public class Bag<T>{
         return false;
     }
 
-    /**
-     * Returns whether the Bag is empty or not.
-     * @return True if the bag is empty, false if not.
-     */
+    public T remove(){
+        checkIntegrity();
+        if(isEmpty())
+            return null;
+        T tmp = data[currentSize];
+        data[currentSize]=null;
+        return tmp;
+    }
+
+
+    public void clear(){
+        data = (T[])new Object[DEFAULT_SIZE];
+        currentSize=0;
+    }
+
     public boolean isEmpty() {
         return currentSize == 0;
     }
 
-    /**
-     * Returns the current size of the Bag, meaning the amount of items currently in the Bag.
-     * @return The current size of the Bag.
-     */
+
     public int getCurrentSize() {
         return currentSize;
     }
 
     /**
-     * Checks whether the integrity of the Bag is ok.
+     * Checks whether the integrity of the Project.Bag is ok.
      */
     private void checkIntegrity() {
         if (!integrityOK)
             throw new IllegalStateException("Integrity corrupted!");
     }
 
-    /**
-     * Converts the Bag to an array and returns it;
-     * @return The array representing the Bag.
-     */
     public T[] toArray() {
         checkIntegrity();
         return Arrays.copyOf(data,currentSize);
     }
 
     /**
-     * Checks if the Bag is full or not.
+     * Checks if the Project.Bag is full or not.
      * @return True if the bag is full, false if otherwise.
      */
     public boolean isFull() {
@@ -148,6 +139,6 @@ public class Bag<T>{
         for(int i=0;i<currentSize;i++)
             if(data[i].equals(entry))
                 return data[i];
-            return null;
+        return null;
     }
 }

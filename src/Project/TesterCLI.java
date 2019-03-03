@@ -1,4 +1,6 @@
-import java.util.Arrays;
+package Project;
+
+
 import java.util.Scanner;
 
 public class TesterCLI {
@@ -8,8 +10,11 @@ public class TesterCLI {
 
     }
 
-    public static void task2(){
-        System.out.println("Beginning Task 2....");
+    /**
+     * This method runs task 2 which handles infix, postfix and prefix expressions with stacks.
+     */
+    private static void task2(){
+        System.out.println("Beginning Task 2 with resizable array Stacks....");
         Scanner in = new Scanner(System.in);
         boolean running = true;
         while(running){
@@ -20,17 +25,34 @@ public class TesterCLI {
             else if(!checkBalance(exp))
                 System.out.println("Expression is not balanced!");
             else {
-                System.out.println("Prefix: " + infixToPrefix(exp));
-                System.out.println("Prefix: " + prefix(exp));
+                System.out.println("Prefix: " + prefix(exp, new Stack()));
+                System.out.println("Postfix: " + postfix(exp, new Stack()));
+            }
+        }
 
-                System.out.println("Postfix: " + postfix2(exp));
-//                System.out.println(exp+"\nEval: "+evaluateInfix2(exp));
+        System.out.println("Beginning Task 2 with linked Stacks....");
+        running = true;
+        while(running) {
+            System.out.println("Enter infix expression or type 'q' to exit: ");
+            String exp = in.nextLine().replaceAll(" ", "");
+            if (exp.toLowerCase().trim().charAt(0) == 'q')
+                running = false;
+            else if (!checkBalance(exp))
+                System.out.println("Expression is not balanced!");
+            else {
+                System.out.println("Prefix: " + prefix(exp, new LinkedStack()));
+                System.out.println("Postfix: " + postfix(exp, new LinkedStack()));
             }
         }
     }
 
-    public static int priorityOfOp(char op){
-        int priority=0;
+    /**
+     * A helper method that returns a characters operation priority, or -1 if it is not an operation.
+     * @param op The character to evaluate.
+     * @return An int representing the operations priority.
+     */
+    private static int priorityOfOp(char op){
+        int priority;
         switch (op){
             case '{':
             case '}':
@@ -58,33 +80,14 @@ public class TesterCLI {
         return priority;
     }
 
-
-    // Returns true if 'op2' has higher or same precedence as 'op1'
-    // A utility method to apply an operator 'op' on operands 'a'
-    // and 'b'. Return the result.
-    public static int applyOp(char op, int b, int a)
-    {
-        switch (op)
-        {
-            case '+':
-                return a + b;
-            case '-':
-                return a - b;
-            case '*':
-                return a * b;
-            case '/':
-                if (b == 0)
-                    throw new
-                            UnsupportedOperationException("Cannot divide by zero");
-                return a / b;
-        }
-        return 0;
-    }
-
-
-    private static String postfix2(String exp){
+    /**
+     * This method converts an infix expression into its postfix form.
+     * @param exp A String of a balanced infix expression.
+     * @return A String for the postfix expression.
+     */
+    private static String postfix(String exp, StackInterface type){
         String out="";
-        Stack<Character> ops = new Stack<>();
+        StackInterface<Character> ops = type;
         char[] chars = exp.toCharArray();
         for(char c:chars){
             switch (c){
@@ -123,58 +126,14 @@ public class TesterCLI {
         return out;
     }
 
-    private static int evaluatePostfix(String exp){
-        int two=0;
-        Stack<Integer> vals = new Stack<>();
-        char[] chars = exp.toCharArray();
-        for(char ch:chars){
-            switch (ch){
-                case 'a':
-                    vals.push(2);
-                    break;
-                case 'b':
-                    vals.push(3);
-                    break;
-                case 'c':
-                    vals.push(4);
-                    break;
-                case 'd':
-                    vals.push(5);
-                    break;
-                case 'e':
-                    vals.push(6);
-                    break;
-                case '+':
-                    vals.push(vals.pop()+vals.pop());
-                    break;
-                case '-':
-                    two=vals.pop();
-                    vals.push(vals.pop()-two);
-                    break;
-                case '*':
-                    vals.push(vals.pop()*vals.pop());
-                    break;
-                case '/':
-                    two=vals.pop();
-                    vals.push(vals.pop()/two);
-                    break;
-                case '^':
-                    two=vals.pop();
-                    vals.push(vals.pop()^two);
-                    break;
-            }
-        }
-        return vals.peek();
-    }
-
     /**
-     * This method converts an infix method into its prefix form
+     * This method converts an infix expression into its prefix form.
      * @param exp A String of a balanced infix expression.
-     * @return The String for the Prefix expression.
+     * @return The String for the prefix expression.
      */
-    private static String prefix(String exp){
-        Stack<Character> ops = new Stack<>();
-        Stack<String> vals = new Stack<>();
+    private static String prefix(String exp, StackInterface type){
+        StackInterface<Character> ops = new Stack<>();
+        StackInterface<String> vals = new Stack<>();
         char[] chars=exp.toCharArray();
         for(char c: chars){
             switch (c){
@@ -295,14 +254,14 @@ public class TesterCLI {
                     if(roster.remove(new Student(id)))
                         System.out.println("Removed student");
                     else
-                        System.out.println("Student not found!");
+                        System.out.println("Project.Student not found!");
                     break;
                 case 3:
                     System.out.println("Enter ID to search for: ");
                     if((s=roster.contains(new Student(in.nextInt())))!=null)
                         System.out.println(s.toString());
                     else
-                        System.out.println("Student not found!");
+                        System.out.println("Project.Student not found!");
                     break;
                 case 4:
                     System.out.println("Class size: "+roster.getCurrentSize());
@@ -351,14 +310,14 @@ public class TesterCLI {
                     if (roster2.remove(new Student(id)))
                         System.out.println("Removed student");
                     else
-                        System.out.println("Student not found!");
+                        System.out.println("Project.Student not found!");
                     break;
                 case 3:
                     System.out.println("Enter ID to search for: ");
                     if ((s = roster2.contains(new Student(in.nextInt()))) != null)
                         System.out.println(s.toString());
                     else
-                        System.out.println("Student not found!");
+                        System.out.println("Project.Student not found!");
                     break;
                 case 4:
                     System.out.println("Class size: " + roster2.getCurrentSize());

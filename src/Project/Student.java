@@ -1,3 +1,7 @@
+package Project;
+
+
+@SuppressWarnings({"WeakerAccess", "EqualsWhichDoesntCheckParameterClass"})
 public class Student {
     private int studentId;
     private String first_name, last_name, academicLevel;

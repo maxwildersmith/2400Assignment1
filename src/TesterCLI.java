@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class TesterCLI {
@@ -13,14 +14,17 @@ public class TesterCLI {
         boolean running = true;
         while(running){
             System.out.println("Enter infix expression or type 'q' to exit: ");
-            String exp = in.nextLine();
+            String exp = in.nextLine().replaceAll(" ","");
             if(exp.toLowerCase().trim().charAt(0)=='q')
                 running=false;
             else if(!checkBalance(exp))
                 System.out.println("Expression is not balanced!");
             else {
+                System.out.println("Prefix: " + infixToPrefix(exp));
                 System.out.println("Prefix: " + prefix(exp));
-                System.out.println("Postfix: " + postfix(exp));
+
+                System.out.println("Postfix: " + postfix2(exp));
+//                System.out.println(exp+"\nEval: "+evaluateInfix2(exp));
             }
         }
     }
@@ -34,7 +38,7 @@ public class TesterCLI {
             case ']':
             case '(':
             case ')':
-                priority=4;
+                priority=0;
                 break;
             case '^':
                 priority=3;
@@ -47,37 +51,71 @@ public class TesterCLI {
             case '-':
                 priority=1;
                 break;
+            default:
+                priority = -1;
+                break;
         }
         return priority;
     }
 
-    //highest priority - parentheses, exponent, */, +-   a-b+c=ab-c+     a^b^c=abc^^
-    private static String postfix(String exp) {
+
+    // Returns true if 'op2' has higher or same precedence as 'op1'
+    // A utility method to apply an operator 'op' on operands 'a'
+    // and 'b'. Return the result.
+    public static int applyOp(char op, int b, int a)
+    {
+        switch (op)
+        {
+            case '+':
+                return a + b;
+            case '-':
+                return a - b;
+            case '*':
+                return a * b;
+            case '/':
+                if (b == 0)
+                    throw new
+                            UnsupportedOperationException("Cannot divide by zero");
+                return a / b;
+        }
+        return 0;
+    }
+
+
+    private static String postfix2(String exp){
         String out="";
         Stack<Character> ops = new Stack<>();
         char[] chars = exp.toCharArray();
-        for(char c: chars){
+        for(char c:chars){
             switch (c){
+                case '^':
+                    ops.push(c);
+                    break;
                 case '+':
                 case '-':
-                case '/':
                 case '*':
-                    while(!ops.isEmpty()&&(priorityOfOp(c)<=priorityOfOp(ops.peek())))
-                            out+=ops.pop();
+                case '/':
+                    while(!ops.isEmpty()&&priorityOfOp(c)<=priorityOfOp(ops.peek()))
+                        out+=ops.pop();
                     ops.push(c);
                     break;
                 case '(':
-                case '{':
                 case '[':
+                case '{':
                     ops.push(c);
+                    break;
                 case ')':
-                case '}':
                 case ']':
-                    while(!ops.isEmpty()&&priorityOfOp(ops.peek())!=4)
-                        out+=ops.pop();
+                case '}':
+                    char top=ops.pop();
+                    while(priorityOfOp(top)!=priorityOfOp('(')) {
+                        out += top;
+                        top = ops.pop();
+                    }
                     break;
                 default:
                     out+=c;
+                    break;
             }
         }
         while(!ops.isEmpty())
@@ -85,9 +123,97 @@ public class TesterCLI {
         return out;
     }
 
-    private static String prefix(String exp){
+    private static int evaluatePostfix(String exp){
+        int two=0;
+        Stack<Integer> vals = new Stack<>();
+        char[] chars = exp.toCharArray();
+        for(char ch:chars){
+            switch (ch){
+                case 'a':
+                    vals.push(2);
+                    break;
+                case 'b':
+                    vals.push(3);
+                    break;
+                case 'c':
+                    vals.push(4);
+                    break;
+                case 'd':
+                    vals.push(5);
+                    break;
+                case 'e':
+                    vals.push(6);
+                    break;
+                case '+':
+                    vals.push(vals.pop()+vals.pop());
+                    break;
+                case '-':
+                    two=vals.pop();
+                    vals.push(vals.pop()-two);
+                    break;
+                case '*':
+                    vals.push(vals.pop()*vals.pop());
+                    break;
+                case '/':
+                    two=vals.pop();
+                    vals.push(vals.pop()/two);
+                    break;
+                case '^':
+                    two=vals.pop();
+                    vals.push(vals.pop()^two);
+                    break;
+            }
+        }
+        return vals.peek();
+    }
 
-        return exp;
+    /**
+     * This method converts an infix method into its prefix form
+     * @param exp A String of a balanced infix expression.
+     * @return The String for the Prefix expression.
+     */
+    private static String prefix(String exp){
+        Stack<Character> ops = new Stack<>();
+        Stack<String> vals = new Stack<>();
+        char[] chars=exp.toCharArray();
+        for(char c: chars){
+            switch (c){
+                case '(':
+                case '{':
+                case '[':
+                    ops.push(c);
+                    break;
+                case ')':
+                case '}':
+                case ']':
+                    while(!ops.isEmpty()&&priorityOfOp(ops.peek())!=priorityOfOp('(')) {
+                        String two = vals.pop();
+                        vals.push(""+ops.pop() + vals.pop() + two);
+                    }
+                    ops.pop();
+                    break;
+                case '+':
+                case '-':
+                case '*':
+                case '/':
+                case '^':
+                    while(!ops.isEmpty()&&priorityOfOp(c)<=priorityOfOp(ops.peek())) {
+                        String two=vals.pop();
+                        vals.push(""+ops.pop()+vals.pop()+two);
+                    }
+                    ops.push(c);
+                    break;
+                default:
+                    vals.push(""+c);
+                    break;
+
+            }
+        }
+        while(!ops.isEmpty()){
+            String two=vals.pop();
+            vals.push(ops.pop()+vals.pop()+two);
+        }
+        return vals.pop();
     }
 
     /**
@@ -134,10 +260,6 @@ public class TesterCLI {
             index++;
         }
         return isBalanced;
-    }
-
-    public static void printStack(char c, Stack stack){
-        System.out.printf("''"+c+"'\t"+stack.toString()+"\n");
     }
 
     /**

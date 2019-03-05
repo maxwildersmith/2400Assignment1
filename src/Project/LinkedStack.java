@@ -8,6 +8,7 @@ public class LinkedStack<T> implements StackInterface<T>{
 
     LinkedStack(){
         size=0;
+        first = null;
     }
 
     public int size(){
@@ -20,20 +21,21 @@ public class LinkedStack<T> implements StackInterface<T>{
 
     public void clear() {
         first=null;
+        size=0;
     }
 
-    public void push(T i){
-        first= (Node<T>) new Node(i,first);
+    public void push(T entry){
+        first = (Node<T>) new Node(entry, first);
         size++;
     }
     public T pop(){
         T temp = (T)first.getData();
         first=first.getNext();
+        size--;
         return temp;
     }
     public T peek() {
         return (T)first.getData();
-
     }
 
 }

@@ -61,11 +61,6 @@ public class Bag<T> implements BagInterface<T>{
         return count;
     }
 
-    /**
-     * Special frequency method for the Project.Student class to get the frequency of the class of the student provided.
-     * @param entry A Project.Student with the academic level to find the frequency of.
-     * @return Number of Students with the specified class level.
-     */
     public int getClassFrequencyOf(Student entry) {
         checkIntegrity();
 
@@ -77,7 +72,6 @@ public class Bag<T> implements BagInterface<T>{
                 count++;
         return count;
     }
-
 
     public boolean remove(T entry){
         checkIntegrity();
@@ -127,10 +121,6 @@ public class Bag<T> implements BagInterface<T>{
         return Arrays.copyOf(data,currentSize);
     }
 
-    /**
-     * Checks if the Project.Bag is full or not.
-     * @return True if the bag is full, false if otherwise.
-     */
     public boolean isFull() {
         return data.length == currentSize;
     }

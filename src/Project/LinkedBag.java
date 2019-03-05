@@ -1,6 +1,6 @@
 package Project;
 
-@SuppressWarnings({"WeakerAccess","unchecked", "FieldCanBeLocal"})
+@SuppressWarnings({"unchecked", "FieldCanBeLocal"})
 public class LinkedBag<T> implements BagInterface<T>{
     private int currentSize;
     private Node<T> data;
@@ -54,6 +54,10 @@ public class LinkedBag<T> implements BagInterface<T>{
             t=t.getNext();
         }
         return count;
+    }
+
+    public boolean isFull() {
+        return false;
     }
 
     public boolean remove(T entry){

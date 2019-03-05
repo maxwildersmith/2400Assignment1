@@ -46,6 +46,19 @@ interface BagInterface<T> {
     int getFrequencyOf(T entry);
 
     /**
+     * Special frequency method for the Project.Student class to get the frequency of the class of the student provided.
+     * @param entry A Project.Student with the academic level to find the frequency of.
+     * @return Number of Students with the specified class level.
+     */
+    int getClassFrequencyOf(Student entry);
+
+    /**
+     * Checks if the Project.Bag is full or not.
+     * @return True if the bag is full, false if otherwise.
+     */
+    boolean isFull();
+
+    /**
      * Searches the Bag to to see if a given data object is present.
      * @param entry The data to search for.
      * @return The Bag entry containing the data.

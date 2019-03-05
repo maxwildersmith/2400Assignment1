@@ -1,11 +1,11 @@
 package Project;
 
 
-@SuppressWarnings({"WeakerAccess", "EqualsWhichDoesntCheckParameterClass"})
+@SuppressWarnings({"WeakerAccess", "unused", "EqualsWhichDoesntCheckParameterClass"})
 public class Student {
     private int studentId;
     private String first_name, last_name, academicLevel;
-    public static final String FRESHMAN="Freshman", SOPHOMORE="Sophomore", JUNIOR="Junior", SENIOR="Senior";
+    public static final String FRESHMAN="Freshman", SOPHOMORE="Sophomore", JUNIOR="Junior", SENIOR="Senior", UNKNOWN="UNKNOWN";
 
     public Student(){
 

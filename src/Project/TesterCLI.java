@@ -69,14 +69,14 @@ public class TesterCLI {
                         if (roster.remove(new Student(id)))
                             System.out.println("Removed student");
                         else
-                            System.out.println("Project.Student not found!");
+                            System.out.println("Student not found!");
                         break;
                     case 3:
                         System.out.println("Enter ID to search for: ");
                         if ((s = roster.contains(new Student(in.nextInt()))) != null)
                             System.out.println(s.toString());
                         else
-                            System.out.println("Project.Student not found!");
+                            System.out.println("Student not found!");
                         break;
                     case 4:
                         System.out.println("Class size: " + roster.getCurrentSize());
@@ -264,7 +264,9 @@ public class TesterCLI {
                 String two=vals.pop();
                 vals.push(ops.pop()+vals.pop()+two);
             }
-            out=vals.pop();
+            while (!vals.isEmpty())
+                out = vals.pop() + out;
+
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
